@@ -10,6 +10,7 @@ The goal of this project is to provide a simple and intuitive interface for user
 
 This project was developed using the Rust programming language and several of its libraries for web development, including:
 
+- **Actix Web**: A powerful, pragmatic, and extremely fast web framework for Rust.
 - **Rocket**: A web framework for Rust that makes it simple to write fast, secure, and reliable web applications.
 - **Diesel**: A safe, extensible ORM and Query Builder for Rust.
 - **Tera**: A template engine inspired by Jinja2 and Django Templates.
@@ -19,7 +20,7 @@ This project was developed using the Rust programming language and several of it
 1. Install Rust on your system if you haven't already. You can do this by following the instructions on the [official Rust page](https://www.rust-lang.org/tools/install).
 2. Clone this repository to your local system.
 3. Navigate to the project directory and run the command `cargo run` to start the server.
-4. Open a browser and go to `http://localhost:8000` to see the application in action.
+4. Open a browser and go to `http://localhost:4000` to see the application in action.
 
 ## License
 
