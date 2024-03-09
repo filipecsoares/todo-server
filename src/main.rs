@@ -1,21 +1,8 @@
-use actix_web::{dev::Service, http::StatusCode, test, web, App, HttpResponse, HttpServer, Responder, get};
+mod todo_api_web;
 
-#[get("/ping")]
-pub async fn ping() -> impl Responder {
-   HttpResponse::Ok().body("pong")
-}
-
-#[get("/~/ready")]
-pub async fn readiness() -> impl Responder {
-    let process = std::process::Command::new("sh")
-        .arg("-c")
-        .arg("echo hello")
-        .output();
-    match process {
-        Ok(_) => HttpResponse::Accepted(),
-        Err(_) => HttpResponse::InternalServerError()
-    }
-}
+use todo_api_web::controller::{ping, readiness};
+use actix_web::{dev::Service, http::StatusCode, test, web, App, HttpResponse, HttpServer};
+use num_cpus;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -25,7 +12,7 @@ async fn main() -> std::io::Result<()> {
            .service(ping)
            .default_service(web::to(||HttpResponse::NotFound()))    
    })
-   .workers(6)
+   .workers(num_cpus::get() + 2)
    .bind(("localhost", 4000))
    .unwrap()
    .run()
