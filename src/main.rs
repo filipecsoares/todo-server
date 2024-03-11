@@ -1,6 +1,6 @@
 mod todo_api_web;
 
-use todo_api_web::controller::{ping, readiness};
+use todo_api_web::controller::{ping, readiness, todo::create_todo};
 use actix_web::{web, App, HttpResponse, HttpServer};
 use num_cpus;
 
@@ -10,6 +10,7 @@ async fn main() -> std::io::Result<()> {
        App::new()
            .service(readiness)
            .service(ping)
+           .service(create_todo)
            .default_service(web::to(||HttpResponse::NotFound()))    
    })
    .workers(num_cpus::get() + 2)
