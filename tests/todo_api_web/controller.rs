@@ -1,12 +1,11 @@
 #[cfg(test)]
 mod ping_readiness {
-    use todo_server::todo_api_web::controller::{ping, readiness};
-
-    use actix_web::{test, body, App, http::StatusCode, dev::Service, HttpResponse, web};
+    use todo_server::todo_api_web::routes::app_routes;
+    use actix_web::{test, body, App, http::StatusCode, dev::Service, web};
 
     #[actix_web::test]
     async fn test_ping_pong() {
-        let mut app = test::init_service(App::new().service(ping)).await;
+        let mut app = test::init_service(App::new().configure(app_routes)).await;
 
         let req = test::TestRequest::get().uri("/ping").to_request();
         let resp = test::call_service(&mut app, req).await;
@@ -18,7 +17,7 @@ mod ping_readiness {
 
     #[actix_web::test]
     async fn test_readiness() {
-        let mut app = test::init_service(App::new().service(readiness)).await;
+        let mut app = test::init_service(App::new().configure(app_routes)).await;
 
         let req = test::TestRequest::get().uri("/ready").to_request();
         let resp = test::call_service(&mut app, req).await;
@@ -27,13 +26,7 @@ mod ping_readiness {
 
     #[actix_web::test]
     async fn not_found_route() {
-        let app = test::init_service(
-            App::new()
-                .service(readiness)
-                .service(ping)
-                .default_service(web::to(|| HttpResponse::NotFound())),
-        )
-        .await;
+        let app = test::init_service(App::new().configure(app_routes)).await;
 
         let req = test::TestRequest::with_uri("/crazy-path").to_request();
 
